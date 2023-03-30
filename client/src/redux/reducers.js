@@ -1,6 +1,6 @@
 const initialState = {
   currentUser: undefined,
-  walletAccount: undefined,
+  walletAddress: undefined,
 };
 
 const reducer = (state = initialState, action) => {
@@ -9,8 +9,8 @@ const reducer = (state = initialState, action) => {
   switch (type) {
     case "SET_CURRENT_USER":
       return { ...state, currentUser: payload };
-    case "SET_WALLET_ACCOUNT":
-      return { ...state, walletAccount: payload };
+    case "SET_WALLET_ADDRESS":
+      return { ...state, walletAddress: payload };
     default:
       return state;
   }

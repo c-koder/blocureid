@@ -5,9 +5,9 @@ export const setCurrentUser = (payload) => {
   };
 };
 
-export const setWalletAccount = (payload) => {
+export const setWalletAddress = (payload) => {
   return {
-    type: "SET_WALLET_ACCOUNT",
+    type: "SET_WALLET_ADDRESS",
     payload: payload,
   };
 };

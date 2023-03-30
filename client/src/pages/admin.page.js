@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Web3 from "web3";
 
 import DigitalIdentityAbi from "../config/abi.json";
-import { setWalletAccount } from "../redux/actions";
+import { setWalletAddress } from "../redux/actions";
 
 const web3 = new Web3(window.ethereum);
 const contractAddress = "0x29C0331243580231bd058733A3EcBCc8B28EeB32";
@@ -14,17 +14,17 @@ const digitalIdentityContract = new web3.eth.Contract(
 const Admin = () => {
   const dispatch = useDispatch();
 
-  const walletAccount = useSelector((state) => state.walletAccount);
+  const walletAddress = useSelector((state) => state.walletAddress);
 
   const hash = "QmXcY1jKMG8os4wLQ4ApKeKadM4oMUpKoqmPpX9gGcMP1b";
   const [returnedHash, setReturnedHash] = useState([]);
 
   useEffect(() => {
-    !walletAccount &&
+    !walletAddress &&
       (async () => {
         await window.ethereum.request({ method: "eth_requestAccounts" });
         const accounts = await web3.eth.getAccounts();
-        dispatch(setWalletAccount(accounts[0]));
+        dispatch(setWalletAddress(accounts[0]));
       })();
     // eslint-disable-next-line
   }, []);
@@ -34,7 +34,7 @@ const Admin = () => {
       .storeUserData(ipfsHash)
       .estimateGas();
     await digitalIdentityContract.methods.storeUserData(ipfsHash).send({
-      from: walletAccount,
+      from: walletAddress,
       gas,
     });
   };
@@ -42,7 +42,7 @@ const Admin = () => {
   const getUserData = async () => {
     return await digitalIdentityContract.methods
       .getUserData()
-      .call({ from: walletAccount });
+      .call({ from: walletAddress });
   };
 
   return (
