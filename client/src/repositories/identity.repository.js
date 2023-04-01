@@ -1,18 +1,11 @@
-import {
-  ref,
-  get,
-  set,
-  query,
-  orderByChild,
-  equalTo,
-  update,
-} from "firebase/database";
+import { ref, get, set, update, push } from "firebase/database";
 
 import moment from "moment";
+import axios from "axios";
 
 import { auth, db } from "../config/firebase.config";
 
-const getIdentities = async () => {
+const getIdentities = () => {
   return new Promise(async (resolve, reject) => {
     // To be updated
     if (auth.currentUser.uid === "") {
@@ -25,7 +18,7 @@ const getIdentities = async () => {
   });
 };
 
-const createIdentity = async (data) => {
+const createIdentity = (data) => {
   return new Promise(async (resolve, reject) => {
     if (
       data.uid &&
@@ -52,7 +45,7 @@ const createIdentity = async (data) => {
   });
 };
 
-const updateIdentity = async (data) => {
+const updateIdentity = (data) => {
   return new Promise(async (resolve, reject) => {
     update(ref(db, `identities/${auth.currentUser.uid}/${data.id}`), {
       ...data,
@@ -63,4 +56,72 @@ const updateIdentity = async (data) => {
   });
 };
 
-export { createIdentity, getIdentities, updateIdentity };
+// JSON.stringify({
+//   pinataOptions: {
+//     cidVersion: 1,
+//   },
+//   pinataMetadata: {
+//     name: "<user_id>",
+//     keyvalues: {
+//       key: "value",
+//       key2: "value",
+//     },
+//   },
+//   pinataContent: {
+//     somekey: "somevalue",
+//   },
+// });
+
+const uploadToIpfs = (data) => {
+  return new Promise(async (resolve, reject) => {
+    await axios
+      .post("https://api.pinata.cloud/pinning/pinJSONToIPFS", data, {
+        headers: {
+          pinata_api_key: `${process.env.REACT_APP_PINATA_API_KEY}`,
+          pinata_secret_api_key: `${process.env.REACT_APP_PINATA_API_SECRET}`,
+        },
+      })
+      .then((res) => resolve({ code: 200, data: res.data.IpfsHash }))
+      .catch((err) => reject({ code: 500, data: err }));
+  });
+};
+
+const retrieveFromIpfs = (ipfsHash) => {
+  return new Promise(async (resolve, reject) => {
+    await axios
+      .get(`https://gateway.pinata.cloud/ipfs/${ipfsHash}`)
+      .then((res) => resolve({ code: 200, data: res.data }))
+      .catch((err) => reject({ code: 500, data: err }));
+  });
+};
+
+// JSON.stringify({
+//   ipfsPinHash: "CID",
+//   name: "Name",
+//   keyvalues: {
+//     anewkeyk: "anewvalue",
+//   },
+// });
+
+const updateIdentityInIpfs = (data) => {
+  return new Promise(async (resolve, reject) => {
+    await axios
+      .put("https://api.pinata.cloud/pinning/hashMetadata", data, {
+        headers: {
+          pinata_api_key: `${process.env.REACT_APP_PINATA_API_KEY}`,
+          pinata_secret_api_key: `${process.env.REACT_APP_PINATA_API_SECRET}`,
+        },
+      })
+      .then((res) => resolve({ code: 200, data: res.data }))
+      .catch((err) => reject({ code: 500, data: err }));
+  });
+};
+
+export {
+  createIdentity,
+  getIdentities,
+  updateIdentity,
+  uploadToIpfs,
+  retrieveFromIpfs,
+  updateIdentityInIpfs,
+};

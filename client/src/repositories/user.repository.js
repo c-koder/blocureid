@@ -19,7 +19,7 @@ import moment from "moment";
 
 import { auth, db } from "../config/firebase.config";
 
-const getUser = async (by, value) => {
+const getUser = (by, value) => {
   return new Promise(async (resolve, reject) => {
     await get(query(ref(db, "users/"), orderByChild(by), equalTo(value)))
       .then((snapshot) => resolve({ code: 200, data: snapshot.val() }))
@@ -27,7 +27,7 @@ const getUser = async (by, value) => {
   });
 };
 
-const registerUser = async (user) => {
+const registerUser = (user) => {
   return new Promise(async (resolve, reject) => {
     if (
       user.first_name &&
@@ -67,7 +67,7 @@ const registerUser = async (user) => {
   });
 };
 
-const sendUserVerifyEmail = async (user) => {
+const sendUserVerifyEmail = (user) => {
   return new Promise(async (resolve, reject) => {
     if (
       user.verification_email_sent &&
@@ -110,7 +110,7 @@ const sendUserVerifyEmail = async (user) => {
   });
 };
 
-const verifyUserEmail = async (oobCode, data) => {
+const verifyUserEmail = (oobCode, user) => {
   return new Promise(async (resolve, reject) => {
     if (
       oobCode &&
@@ -124,7 +124,7 @@ const verifyUserEmail = async (oobCode, data) => {
       await applyActionCode(auth, oobCode)
         .then(() => {
           updateUserDetails({
-            ...data,
+            ...user,
             verification_email_sent: null,
             email_verified: true,
           })
@@ -138,7 +138,7 @@ const verifyUserEmail = async (oobCode, data) => {
   });
 };
 
-const loginUser = async (user) => {
+const loginUser = (user) => {
   return new Promise(async (resolve, reject) => {
     if (user.email && user.password) {
       await signInWithEmailAndPassword(auth, user.email, user.password)
@@ -154,7 +154,7 @@ const loginUser = async (user) => {
   });
 };
 
-const updateUserDetails = async (data) => {
+const updateUserDetails = (user) => {
   return new Promise(async (resolve, reject) => {
     if (
       user.uid &&
@@ -164,8 +164,8 @@ const updateUserDetails = async (data) => {
       user.phone_number &&
       user.country
     ) {
-      update(ref(db, `users/${data.uid}`), {
-        ...data,
+      update(ref(db, `users/${user.uid}`), {
+        ...user,
         last_updated: moment().format("YYYY-MM-DD HH:mm").toString(),
       })
         .then((res) => resolve({ code: 200, data: res }))
@@ -176,7 +176,7 @@ const updateUserDetails = async (data) => {
   });
 };
 
-const logout = async () => {
+const logout = () => {
   return new Promise(async (resolve, reject) => {
     await signOut(auth)
       .then(() => resolve({ code: 200, data: "Logged out successfully." }))
