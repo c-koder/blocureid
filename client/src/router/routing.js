@@ -6,6 +6,7 @@ import { setCurrentUser } from "../redux/actions";
 import { getUser } from "../services/user.service";
 import { auth } from "../config/firebase.config";
 
+import Navbar from "../components/navbar.component";
 import Home from "../pages/home.page";
 import Profile from "../pages/profile.page";
 import Admin from "../pages/admin.page";
@@ -42,6 +43,7 @@ const Routing = () => {
   return (
     !loading && (
       <>
+        <Navbar />
         <Routes>
           <Route path="*" element={<Navigate to="/" />} />
           <Route exact path="/" element={<Home />} />

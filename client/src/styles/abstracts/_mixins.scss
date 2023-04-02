@@ -1,0 +1,9 @@
+@use "./variables.scss" as *;
+
+@mixin transition {
+  -webkit-transition: all 0.15s !important;
+  -moz-transition: all 0.15s !important;
+  -ms-transition: all 0.15s !important;
+  -o-transition: all 0.15s !important;
+  transition: all 0.15s !important;
+}

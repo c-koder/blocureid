@@ -9,7 +9,7 @@ import Routing from "./router/routing";
 
 import store from "./redux/store";
 
-import "./styles/index.css";
+import "./styles/styles.scss";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 

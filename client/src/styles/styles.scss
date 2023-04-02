@@ -1,0 +1,198 @@
+@use "./abstracts/" as *;
+
+* {
+  cursor: default;
+  font-family: $font-primary;
+  box-sizing: border-box;
+
+  @media screen and (max-width: $mobile_res) {
+    font-size: 16px;
+  }
+}
+
+a {
+  cursor: pointer;
+  text-decoration: none !important;
+  color: inherit;
+}
+
+html {
+  overflow-y: overlay;
+  overflow-x: hidden;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  background-color: $light;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: 700;
+  color: $dark;
+}
+
+h1 {
+  font-size: 66px;
+}
+
+h2 {
+  font-size: 50px;
+}
+
+h3 {
+  font-size: 38px;
+}
+
+h4 {
+  font-size: 28px;
+}
+
+h5 {
+  font-size: 21px;
+}
+
+p {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 30px;
+  color: $dark;
+}
+
+/** Navbar **/
+.navbar {
+  padding: 25px 0;
+  background-color: rgba($white, 0.5);
+  backdrop-filter: blur(3px);
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0px 10px 60px rgba($dark, 0.025);
+
+  @media screen and (max-width: $mobile-res) {
+    background-color: rgba($white, 0.95);
+    padding: 25px 15px;
+
+    .navbar-toggler {
+      box-shadow: none;
+      border: none;
+
+      .navbar-toggler-icon {
+        cursor: pointer;
+      }
+    }
+
+    .navbar-nav {
+      margin-top: 10px;
+
+      .nav-item {
+        margin: 2px 0;
+      }
+    }
+  }
+
+  .navbar-nav {
+    .nav-item {
+      font-size: 18px;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: $dark;
+      margin: 0px 7px;
+      @include transition;
+
+      &:hover {
+        color: $primary;
+        transform: translateY(-1px);
+      }
+    }
+  }
+}
+
+/** Buttons **/
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 500;
+  text-transform: uppercase;
+
+  &:disabled {
+    color: $primary;
+    background: $secondary;
+  }
+}
+
+.btn-primary {
+  background: $primary;
+
+  &:hover {
+    background: $dark;
+  }
+}
+
+.btn-secondary {
+  background: $gray;
+  color: $black;
+  border: 1px solid transparent;
+
+  &:hover {
+    background: $light;
+    color: $black;
+    border: 1px solid $gray;
+  }
+}
+
+/** Home **/
+
+#home {
+  position: relative;
+
+  .homeImg {
+    position: absolute;
+    top: 0;
+    right: -30%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    @media screen and (max-width: $mobile-res) {
+      display: none;
+    }
+  }
+}
+
+/** Scrollbar **/
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: rgba($dark, 0.5);
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+@media screen and (max-width: $mobile-res) {
+  body {
+    padding: 0 10px;
+  }
+}

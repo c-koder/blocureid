@@ -1,0 +1,34 @@
+$primary: #3b5998;
+$secondary: #8b9dc3;
+
+$dark: #1d2a4e;
+$black: #090909;
+$gray: #d8d8d8;
+$light: #efefef;
+$white: #ffffff;
+
+$error: #d43a3a;
+$warning: #ffca0f;
+$success: #20d875;
+
+$font-primary: "Inter", sans-serif;
+
+$mobile-res: 992px;
+
+[data-theme="light"] {
+  $dark: #fff;
+  $light: #0c0c0c;
+}
+
+:export {
+  primary: $primary;
+  secondary: $secondary;
+  dark: $dark;
+  black: $black;
+  gray: $gray;
+  light: $light;
+  white: $white;
+  error: $error;
+  warning: $warning;
+  success: $success;
+}
