@@ -11,6 +11,7 @@ import Home from "../pages/home.page";
 import Profile from "../pages/profile.page";
 import Admin from "../pages/admin.page";
 import VerifyEmail from "../pages/verifyEmail.page";
+import Footer from "../components/footer.component";
 
 const Routing = () => {
   const dispatch = useDispatch();
@@ -71,6 +72,7 @@ const Routing = () => {
           />
           <Route exact path="/admin" element={<Admin />} />
         </Routes>
+        <Footer />
       </>
     )
   );

@@ -14,6 +14,10 @@ a {
   cursor: pointer;
   text-decoration: none !important;
   color: inherit;
+
+  &:hover {
+    color: $primary;
+  }
 }
 
 html {
@@ -63,6 +67,7 @@ p {
 }
 
 /** Navbar **/
+
 .navbar {
   padding: 25px 0;
   background-color: rgba($white, 0.5);
@@ -145,6 +150,27 @@ p {
   }
 }
 
+/** Form Controls **/
+
+.form-control {
+  background-color: transparent;
+  border: 1px solid $gray;
+  @include transition;
+  padding: 16px 20px;
+  border-radius: 12px;
+  cursor: text;
+
+  &:active,
+  &:focus {
+    background-color: $white;
+    border-color: $primary;
+  }
+}
+
+section {
+  scroll-margin-top: 60px;
+}
+
 /** Home **/
 
 #home {
@@ -170,6 +196,229 @@ p {
   }
 }
 
+/** Features **/
+
+#features {
+  background-color: $white;
+}
+
+.features-wrapper {
+  .feature {
+    display: flex;
+    justify-content: center;
+    background-color: $light;
+    gap: 20px;
+    width: fit-content;
+    margin: 20px auto;
+    padding: 30px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    @include transition;
+
+    .img-wrapper {
+      width: 120px;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        object-fit: contain;
+      }
+    }
+
+    .details {
+      max-width: 500px;
+
+      h4 {
+        color: $primary;
+      }
+    }
+
+    &:hover {
+      border: 1px solid rgba($primary, 0.15);
+    }
+
+    @media screen and (max-width: $mobile-res) {
+      .img-wrapper {
+        width: 160px;
+      }
+    }
+  }
+}
+
+/** How It Works **/
+
+.howitworks-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .howitworks {
+    display: flex;
+    gap: 20px;
+    width: fit-content;
+    margin: 15px 0;
+
+    .img-wrapper {
+      width: 100px;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        object-fit: contain;
+      }
+    }
+
+    .details {
+      max-width: 500px;
+
+      h4 {
+        color: $primary;
+      }
+    }
+
+    @media screen and (max-width: $mobile-res) {
+      .img-wrapper {
+        width: 160px;
+      }
+    }
+  }
+}
+
+/** Testimonials **/
+
+#testimonials {
+  background-color: $white;
+}
+
+.testimonials-wrapper {
+  width: fit-content;
+  margin: 0 auto;
+
+  .testimonial {
+    display: flex;
+    gap: 20px;
+    width: fit-content;
+    margin: 15px 0;
+
+    .img-wrapper {
+      width: 160px;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        object-fit: contain;
+      }
+    }
+
+    .details {
+      max-width: 600px;
+
+      h4 {
+        color: $primary;
+      }
+    }
+
+    @media screen and (max-width: $mobile-res) {
+      .img-wrapper {
+        width: 160px;
+      }
+    }
+  }
+
+  hr {
+    border: 1px solid $primary;
+    border-radius: 20px;
+    opacity: 0.75;
+    width: 100%;
+    margin-bottom: 30px;
+  }
+}
+
+/** Contact Us **/
+
+#contactus {
+  .contact-icons-wrapper {
+    width: fit-content;
+    margin: auto;
+
+    .contact-icon {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: center;
+      margin: 0 20px;
+
+      a,
+      i {
+        cursor: pointer;
+        @include transition;
+      }
+
+      a,
+      p {
+        margin-top: 0;
+        font-weight: 600;
+        text-decoration: none;
+        font-size: 18px;
+      }
+
+      i {
+        font-size: 32px;
+        color: $primary;
+        margin-bottom: 20px;
+      }
+    }
+
+    @media screen and (max-width: $mobile-res) {
+      .contact-icon {
+        margin: 10px 0;
+      }
+    }
+  }
+}
+
+.contactus-wrapper {
+  width: fit-content;
+  margin: 0 auto;
+  background-color: $white;
+  padding: 40px;
+  border-radius: 15px;
+
+  .form-control {
+    min-width: 450px;
+  }
+
+  textarea {
+    resize: none;
+  }
+
+  @media screen and (max-width: $mobile-res) {
+    width: 95%;
+
+    .form-control {
+      min-width: 100%;
+    }
+  }
+}
+
+/** Footer **/
+
+footer {
+  background-color: rgba($dark, 0.75);
+  padding: 12px 0;
+  text-align: center;
+
+  p {
+    margin: 0;
+    color: $light;
+    font-size: 14px;
+
+    img {
+      width: 90px;
+    }
+  }
+}
+
 /** Scrollbar **/
 
 ::-webkit-scrollbar-track {
@@ -177,14 +426,14 @@ p {
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background-color: rgba($dark, 0.5);
+  background-color: rgba($dark, 0.85);
 }
 
 ::-webkit-scrollbar-corner {
@@ -192,7 +441,28 @@ p {
 }
 
 @media screen and (max-width: $mobile-res) {
-  body {
-    padding: 0 10px;
+  h1 {
+    font-size: 50px;
+  }
+
+  h2 {
+    font-size: 44px;
+  }
+
+  h3 {
+    font-size: 32px;
+  }
+
+  h4 {
+    font-size: 24px;
+  }
+
+  h5 {
+    font-size: 18px;
+  }
+
+  p {
+    font-size: 16px;
+    line-height: 24px;
   }
 }
