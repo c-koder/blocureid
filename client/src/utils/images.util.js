@@ -19,6 +19,8 @@ import Testimonial1 from "../assets/images/t1.png";
 import Testimonial2 from "../assets/images/t2.png";
 import Testimonial3 from "../assets/images/t3.png";
 
+import LoginImg from "../assets/images/login_img.png";
+
 export {
   LogoDark,
   LogoLight,
@@ -36,4 +38,5 @@ export {
   Testimonial1,
   Testimonial2,
   Testimonial3,
+  LoginImg,
 };

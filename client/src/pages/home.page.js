@@ -1,3 +1,5 @@
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import {
   Feature1,
   Feature2,
@@ -16,6 +18,8 @@ import {
 } from "../utils/images.util";
 
 const Home = () => {
+  const currentUser = useSelector((state) => state.currentUser);
+
   return (
     <>
       <section
@@ -35,10 +39,16 @@ const Home = () => {
                 and securely. Take control of your digital identity today - join
                 the powerful BlocureID community!
               </p>
-              <div className="hstack gap-3">
-                <button className="btn btn-primary">Register</button>
-                <button className="btn btn-secondary">Login</button>
-              </div>
+              {!currentUser && (
+                <div className="hstack gap-3">
+                  <Link to="/register">
+                    <button className="btn btn-primary">Register</button>
+                  </Link>
+                  <Link to="/login">
+                    <button className="btn btn-secondary">Login</button>
+                  </Link>
+                </div>
+              )}
             </div>
             <div className="homeImg">
               <img src={HomeImg} alt="home-img" />
@@ -148,7 +158,13 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <button className="btn btn-primary d-flex mx-auto">Start Now</button>
+          {!currentUser && (
+            <Link to="/login">
+              <button type="button" className="btn btn-primary d-flex mx-auto">
+                Start Now
+              </button>
+            </Link>
+          )}
         </div>
       </section>
       <section

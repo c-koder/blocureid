@@ -11,7 +11,7 @@
 }
 
 a {
-  cursor: pointer;
+  cursor: pointer !important;
   text-decoration: none !important;
   color: inherit;
 
@@ -74,6 +74,12 @@ p {
   backdrop-filter: blur(3px);
   border-radius: 0 0 10px 10px;
   box-shadow: 0px 10px 60px rgba($dark, 0.025);
+
+  .navbar-brand {
+    img {
+      cursor: pointer;
+    }
+  }
 
   @media screen and (max-width: $mobile-res) {
     background-color: rgba($white, 0.95);
@@ -150,6 +156,15 @@ p {
   }
 }
 
+.btn-icon {
+  i {
+    font-size: 36px;
+    color: $primary;
+    margin-top: 2px;
+    cursor: pointer;
+  }
+}
+
 /** Form Controls **/
 
 .form-control {
@@ -165,6 +180,15 @@ p {
     background-color: $white;
     border-color: $primary;
   }
+}
+
+.alert {
+  border-radius: 12px;
+  font-size: 16px;
+  padding: 12px 18px;
+  width: fit-content;
+  min-width: 200px;
+  margin: auto;
 }
 
 section {
@@ -416,6 +440,59 @@ footer {
     img {
       width: 90px;
     }
+  }
+}
+
+/** Login **/
+
+.login-wrapper {
+  width: fit-content;
+  background-color: $white;
+  font-size: 18px;
+
+  border-radius: 40px;
+  margin: 0 auto;
+
+  .login-form {
+    padding: 40px;
+  }
+
+  img {
+    height: 100%;
+  }
+
+  a {
+    cursor: pointer !important;
+    font-weight: 700;
+  }
+}
+
+/** Register **/
+
+.register-wrapper {
+  width: fit-content;
+  max-width: 30vw;
+  background-color: $white;
+  font-size: 18px;
+  padding: 40px;
+
+  border-radius: 40px;
+  margin: 0 auto;
+
+  a {
+    cursor: pointer !important;
+    font-weight: 700;
+  }
+
+  .form-select {
+    option {
+      font-size: 18px;
+    }
+  }
+
+  @media screen and (max-width: $mobile-res) {
+    max-width: 95%;
+    margin: 40px auto;
   }
 }
 

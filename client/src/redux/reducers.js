@@ -1,6 +1,7 @@
 const initialState = {
   currentUser: undefined,
   walletAddress: undefined,
+  currentNav: 0,
 };
 
 const reducer = (state = initialState, action) => {
@@ -11,6 +12,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, currentUser: payload };
     case "SET_WALLET_ADDRESS":
       return { ...state, walletAddress: payload };
+    case "SET_CURRENT_NAV":
+      return { ...state, currentNav: payload };
     default:
       return state;
   }

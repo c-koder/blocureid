@@ -32,6 +32,7 @@ const registerUser = (user) => {
     if (
       user.first_name &&
       user.last_name &&
+      user.dob &&
       user.email &&
       user.phone_number &&
       user.country &&
@@ -44,11 +45,11 @@ const registerUser = (user) => {
               ...user,
               uid: auth.currentUser.uid,
               email_verified: false,
-              joined_date: moment().format("YYYY-MM-DD HH:mm").toString(),
+              joined_date: moment().format("DD/MM/YYYY HH:mm").toString(),
             })
               .then(() =>
                 updateProfile(auth.currentUser, {
-                  displayName: `${user.firstName} ${user.lastName}`,
+                  displayName: `${user.first_name} ${user.last_name}`,
                 })
                   .then(() =>
                     sendUserVerifyEmail({ ...user, uid: auth.currentUser.uid })
@@ -72,9 +73,9 @@ const sendUserVerifyEmail = (user) => {
     if (
       user.verification_email_sent &&
       moment().diff(
-        moment(user.verification_email_sent, "YYYY-MM-DD HH:mm"),
+        moment(user.verification_email_sent, "DD/MM/YYYY HH:mm"),
         "minutes"
-      ) > 2
+      ) < 2
     ) {
       reject({
         code: 422,
@@ -82,19 +83,20 @@ const sendUserVerifyEmail = (user) => {
       });
     } else {
       if (
-        user.uid &&
         user.first_name &&
         user.last_name &&
+        user.dob &&
         user.email &&
         user.phone_number &&
-        user.country
+        user.country &&
+        user.password
       ) {
         await sendEmailVerification(auth.currentUser)
           .then(() => {
             updateUserDetails({
               ...user,
               verification_email_sent: moment()
-                .format("YYYY-MM-DD HH:mm")
+                .format("DD/MM/YYYY HH:mm")
                 .toString(),
             })
               .then(() =>
@@ -166,7 +168,7 @@ const updateUserDetails = (user) => {
     ) {
       update(ref(db, `users/${user.uid}`), {
         ...user,
-        last_updated: moment().format("YYYY-MM-DD HH:mm").toString(),
+        last_updated: moment().format("DD/MM/YYYY HH:mm").toString(),
       })
         .then((res) => resolve({ code: 200, data: res }))
         .catch((err) => reject({ code: 500, data: err.message }));
