@@ -39,8 +39,9 @@ const Register = () => {
     } else if (!phoneNumber || phoneNumber.length < 10) {
       setError("A valid phone number is required");
     } else if (
-      !email ||
-      !email.match(/\b[A-Za-z0-9._%+-]+@(gmail|yahoo|hotmail)\.(com|net|org)\b/)
+      !email
+      // ||
+      // !email.match(/\b[A-Za-z0-9._%+-]+@(gmail|yahoo|hotmail)\.(com|net|org)\b/)
     ) {
       setError("A valid gmail/yahoo/hotmail email is required");
     } else if (
