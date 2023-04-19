@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import {
   sendEmailVerification,
   verifyUserEmail,
@@ -9,16 +9,16 @@ import { Logo } from "../utils/images.util";
 
 const VerifyEmail = () => {
   const currentUser = useSelector((state) => state.currentUser);
-  const navigate = useNavigate();
 
   let [searchParams] = useSearchParams();
 
   useEffect(() => {
     setLoading(true);
+    console.log(searchParams.get("oobCode"));
     if (searchParams.get("oobCode")) {
       verifyUserEmail(searchParams.get("oobCode"), currentUser)
         .then((res) => {
-          res.code === 200 && navigate("/profile");
+          res.code === 200 && window.reload();
           setLoading(false);
         })
         .catch((err) => {
@@ -67,12 +67,15 @@ const VerifyEmail = () => {
       <div className="container">
         <h2>Verify your email</h2>
         {loading && (
-          <img
-            src={Logo}
-            alt="logo-dark-loader"
-            className="loader-img"
-            style={{ width: 50 }}
-          />
+          <>
+            <img
+              src={Logo}
+              alt="logo-dark-loader"
+              className="loader-img"
+              style={{ width: 50 }}
+            />
+            <br />
+          </>
         )}
         <button
           disabled={loading}
