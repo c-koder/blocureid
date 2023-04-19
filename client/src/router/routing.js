@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { Navigate, Routes, Route, useLocation } from "react-router-dom";
+import {
+  Navigate,
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import Web3 from "web3";
@@ -32,6 +38,7 @@ const web3 = new Web3(window.ethereum);
 const Routing = () => {
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
 
@@ -97,24 +104,21 @@ const Routing = () => {
     } else {
       dispatch(setCurrentNav(0));
     }
-
     // eslint-disable-next-line
   }, [location]);
+
+  useEffect(() => {
+    if (currentUser && !currentUser.email_verified) {
+      navigate("/verify-email");
+    }
+    // eslint-disable-next-line
+  }, [location, currentUser]);
 
   return !loading ? (
     <>
       <Navbar />
       <Routes>
-        <Route
-          path="*"
-          element={
-            currentUser && !currentUser.email_verified ? (
-              <Navigate to="/verify-email" />
-            ) : (
-              <Navigate to="/" />
-            )
-          }
-        />
+        <Route path="*" element={<Navigate to="/" />} />
         <Route exact path="/" element={<Home />} />
         <Route
           exact

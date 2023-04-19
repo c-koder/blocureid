@@ -36,7 +36,7 @@ const Register = () => {
       setError("A valid birthday is required");
     } else if (country === "Country" || !country) {
       setError("Country is required");
-    } else if (!phoneNumber || phoneNumber.length < 10) {
+    } else if (!phoneNumber || phoneNumber.length !== 10) {
       setError("A valid phone number is required");
     } else if (
       !email
@@ -47,7 +47,7 @@ const Register = () => {
     } else if (
       !password ||
       !password.match(
-        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/
       )
     ) {
       setError(

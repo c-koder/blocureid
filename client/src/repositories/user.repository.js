@@ -88,14 +88,14 @@ const sendUserVerifyEmail = (user) => {
         data: "Wait atleast 2 minutes before trying again.",
       });
     } else {
+      console.log(user);
       if (
         user.first_name &&
         user.last_name &&
         user.dob &&
         user.email &&
         user.phone_number &&
-        user.country &&
-        user.password
+        user.country
       ) {
         await sendEmailVerification(auth.currentUser)
           .then(() => {
@@ -175,8 +175,8 @@ const updateUserDetails = (user) => {
       let url = null;
       if (user.avatar) {
         url = await updateUserAvatar(user.avatar);
+        user.avatar = url.data;
       }
-      user.avatar = url.data;
       update(ref(db, `users/${user.uid}`), {
         ...user,
         last_updated: moment().format("DD/MM/YYYY HH:mm").toString(),

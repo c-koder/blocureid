@@ -5,6 +5,7 @@ import {
   sendEmailVerification,
   verifyUserEmail,
 } from "../services/user.service";
+import { Logo } from "../utils/images.util";
 
 const VerifyEmail = () => {
   const currentUser = useSelector((state) => state.currentUser);
@@ -24,6 +25,8 @@ const VerifyEmail = () => {
           setError(err.data);
           setLoading(false);
         });
+    } else {
+      setLoading(false);
     }
     // eslint-disable-next-line
   }, [searchParams]);
@@ -63,6 +66,14 @@ const VerifyEmail = () => {
     <div className="min-vh-100 d-flex flex-column justify-content-center text-center">
       <div className="container">
         <h2>Verify your email</h2>
+        {loading && (
+          <img
+            src={Logo}
+            alt="logo-dark-loader"
+            className="loader-img"
+            style={{ width: 50 }}
+          />
+        )}
         <button
           disabled={loading}
           className="btn btn-primary mt-3"
