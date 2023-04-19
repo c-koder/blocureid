@@ -2,6 +2,7 @@ const initialState = {
   currentUser: undefined,
   walletAddress: undefined,
   currentNav: 0,
+  sideBarIndex: 0,
 };
 
 const reducer = (state = initialState, action) => {
@@ -14,6 +15,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, walletAddress: payload };
     case "SET_CURRENT_NAV":
       return { ...state, currentNav: payload };
+    case "SET_SIDEBAR_INDEX":
+      return { ...state, sideBarIndex: payload };
     default:
       return state;
   }

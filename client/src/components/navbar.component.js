@@ -1,14 +1,9 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { logout } from "../services/user.service";
 import { LogoDark } from "../utils/images.util";
 
 const Navbar = () => {
   const { currentNav, currentUser } = useSelector((state) => state);
-
-  const handleLogout = async () => {
-    await logout();
-  };
 
   return (
     <nav
@@ -25,11 +20,11 @@ const Navbar = () => {
         <a href="/" className="navbar-brand">
           <img
             src={LogoDark}
-            height={currentNav === 0 ? "28px" : "36px"}
+            height={currentNav === 0 || currentNav === 3 ? "28px" : "36px"}
             alt="navbar-logo"
           />
         </a>
-        {currentNav === 0 && (
+        {(currentNav === 0 || currentNav === 3) && (
           <>
             {!currentUser && (
               <button
@@ -48,12 +43,8 @@ const Navbar = () => {
                     <i className="fa-solid fa-circle-user" />
                   </button>
                 </Link>
-                <Link to="/login">
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={handleLogout}
-                  >
+                <Link to="/logout">
+                  <button type="button" className="btn btn-primary">
                     Logout
                   </button>
                 </Link>

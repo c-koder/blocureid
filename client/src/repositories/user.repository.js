@@ -15,9 +15,14 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
+import {
+  uploadBytes,
+  ref as storageRef,
+  getDownloadURL,
+} from "firebase/storage";
 import moment from "moment";
 
-import { auth, db } from "../config/firebase.config";
+import { auth, db, storage } from "../config/firebase.config";
 
 const getUser = (by, value) => {
   return new Promise(async (resolve, reject) => {
@@ -45,6 +50,7 @@ const registerUser = (user) => {
               ...user,
               uid: auth.currentUser.uid,
               email_verified: false,
+              password: null,
               joined_date: moment().format("DD/MM/YYYY HH:mm").toString(),
             })
               .then(() =>
@@ -166,6 +172,11 @@ const updateUserDetails = (user) => {
       user.phone_number &&
       user.country
     ) {
+      let url = null;
+      if (user.avatar) {
+        url = await updateUserAvatar(user.avatar);
+      }
+      user.avatar = url.data;
       update(ref(db, `users/${user.uid}`), {
         ...user,
         last_updated: moment().format("DD/MM/YYYY HH:mm").toString(),
@@ -174,6 +185,26 @@ const updateUserDetails = (user) => {
         .catch((err) => reject({ code: 500, data: err.message }));
     } else {
       reject({ code: 422, data: "Missing values" });
+    }
+  });
+};
+
+const updateUserAvatar = (avatar) => {
+  return new Promise(async (resolve, reject) => {
+    if (avatar !== null && avatar !== undefined && avatar !== "") {
+      await uploadBytes(
+        storageRef(storage, `avatars/${Date.now()}.png`),
+        avatar,
+        {
+          contentType: "image/png",
+        }
+      ).then(async (snapshot) => {
+        await getDownloadURL(storageRef(storage, snapshot.metadata.fullPath))
+          .then((url) => resolve({ code: 200, data: url }))
+          .catch((err) => reject({ code: 500, data: err.message }));
+      });
+    } else {
+      reject({ code: 422, data: "Invalid Image" });
     }
   });
 };

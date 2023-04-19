@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { loginUser } from "../services/user.service";
 import { LoginImg } from "../utils/images.util";
@@ -32,6 +32,20 @@ const Login = () => {
         });
     }
   };
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setError(undefined);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [error]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSuccess(undefined);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [success]);
 
   return (
     <div className="min-vh-100 d-flex flex-column justify-content-center">

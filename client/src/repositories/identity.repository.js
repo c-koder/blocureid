@@ -1,9 +1,118 @@
 import { ref, get, set, update, push } from "firebase/database";
+import {
+  uploadBytes,
+  ref as storageRef,
+  getDownloadURL,
+} from "firebase/storage";
 
 import moment from "moment";
 import axios from "axios";
 
-import { auth, db } from "../config/firebase.config";
+import Web3 from "web3";
+
+import { auth, db, storage } from "../config/firebase.config";
+
+import DigitalIdentityAbi from "../config/abi.json";
+
+const web3 = new Web3(window.ethereum);
+const contractAddress = "0x29C0331243580231bd058733A3EcBCc8B28EeB32";
+const digitalIdentityContract = new web3.eth.Contract(
+  DigitalIdentityAbi.abi,
+  contractAddress
+);
+
+const storeUserIdentity = async (ipfsHash, walletAddress) => {
+  return new Promise(async (resolve, reject) => {
+    var gasAmount = digitalIdentityContract.methods
+      .storeUserData(ipfsHash)
+      .estimateGas({
+        from: walletAddress,
+      })
+      .then((estimatedGas, err) => {
+        console.log("----------------");
+        console.log(err);
+        console.log("----------------");
+        console.log(gasAmount);
+
+        estimatedGas = Math.round(estimatedGas * 1.2);
+        console.log("Gas limit estimation = " + estimatedGas + " units");
+
+        digitalIdentityContract.methods
+          .storeUserData(ipfsHash)
+          .send({
+            from: walletAddress,
+            gas: estimatedGas,
+          })
+          .once("error", (err) => {
+            reject({ code: 500, data: err });
+          })
+          .then((receipt) => {
+            resolve({ code: 200, data: receipt });
+          });
+      })
+      .catch(function (error) {
+        console.log("estimateGas) - catch error");
+        console.log(error);
+
+        if (error.message.includes("insufficient funds")) {
+          reject({ code: 500, data: "Insufficient funds." });
+        }
+      });
+  });
+};
+
+const getUserIdentities = async (walletAddress) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const data = await digitalIdentityContract.methods
+        .getUserData()
+        .call({ from: walletAddress });
+      resolve(data);
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+const removeUserIdentity = async (ipfsHash, walletAddress) => {
+  return new Promise(async (resolve, reject) => {
+    var gasAmount = digitalIdentityContract.methods
+      .removeUserData(ipfsHash)
+      .estimateGas({
+        from: walletAddress,
+      })
+      .then((estimatedGas, err) => {
+        console.log("----------------");
+        console.log(err);
+        console.log("----------------");
+        console.log(gasAmount);
+
+        estimatedGas = Math.round(estimatedGas * 1.2);
+        console.log("Gas limit estimation = " + estimatedGas + " units");
+
+        digitalIdentityContract.methods
+          .storeUserData(ipfsHash)
+          .send({
+            from: walletAddress,
+            gas: estimatedGas,
+          })
+          .once("error", (err) => {
+            reject({ code: 500, data: err });
+          })
+          .then((receipt) => {
+            resolve({ code: 200, data: receipt });
+          });
+      })
+      .catch(function (error) {
+        console.log("estimateGas) - catch error");
+        console.log(error);
+
+        if (error.message.includes("insufficient funds")) {
+          reject({ code: 500, data: "Insufficient funds." });
+        }
+      });
+  });
+};
 
 const getIdentities = () => {
   return new Promise(async (resolve, reject) => {
@@ -23,7 +132,7 @@ const createIdentity = (data) => {
     if (
       data.uid &&
       data.type &&
-      Object.keys(data).length > 2 &&
+      Object.keys(data).length > 1 &&
       data.wallet_address
     ) {
       const query = push(ref(db, `identities/${auth.currentUser.uid}`), {
@@ -56,22 +165,6 @@ const updateIdentity = (data) => {
   });
 };
 
-// JSON.stringify({
-//   pinataOptions: {
-//     cidVersion: 1,
-//   },
-//   pinataMetadata: {
-//     name: "<user_id>",
-//     keyvalues: {
-//       key: "value",
-//       key2: "value",
-//     },
-//   },
-//   pinataContent: {
-//     somekey: "somevalue",
-//   },
-// });
-
 const uploadToIpfs = (data) => {
   return new Promise(async (resolve, reject) => {
     await axios
@@ -89,19 +182,11 @@ const uploadToIpfs = (data) => {
 const retrieveFromIpfs = (ipfsHash) => {
   return new Promise(async (resolve, reject) => {
     await axios
-      .get(`https://gateway.pinata.cloud/ipfs/${ipfsHash}`)
+      .get(`https://ipfs.io/ipfs/${ipfsHash}`)
       .then((res) => resolve({ code: 200, data: res.data }))
       .catch((err) => reject({ code: 500, data: err }));
   });
 };
-
-// JSON.stringify({
-//   ipfsPinHash: "CID",
-//   name: "Name",
-//   keyvalues: {
-//     anewkeyk: "anewvalue",
-//   },
-// });
 
 const updateIdentityInIpfs = (data) => {
   return new Promise(async (resolve, reject) => {
@@ -117,11 +202,35 @@ const updateIdentityInIpfs = (data) => {
   });
 };
 
+const updateIdentityAvatar = (avatar) => {
+  return new Promise(async (resolve, reject) => {
+    if (avatar !== null && avatar !== undefined && avatar !== "") {
+      await uploadBytes(
+        storageRef(storage, `identities/${Date.now()}.png`),
+        avatar,
+        {
+          contentType: "image/png",
+        }
+      ).then(async (snapshot) => {
+        await getDownloadURL(storageRef(storage, snapshot.metadata.fullPath))
+          .then((url) => resolve({ code: 200, data: url }))
+          .catch((err) => reject({ code: 500, data: err.message }));
+      });
+    } else {
+      reject({ code: 422, data: "Invalid Image" });
+    }
+  });
+};
+
 export {
+  getUserIdentities,
+  storeUserIdentity,
+  removeUserIdentity,
   createIdentity,
   getIdentities,
   updateIdentity,
   uploadToIpfs,
   retrieveFromIpfs,
   updateIdentityInIpfs,
+  updateIdentityAvatar,
 };

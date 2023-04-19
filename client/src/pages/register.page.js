@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { registerUser } from "../services/user.service";
+import moment from "moment";
 
 const Register = () => {
   const [loading, setLoading] = useState(true);
@@ -27,20 +28,30 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleRegister = async () => {
-    if (!firstName) {
-      setError("First name is required");
-    } else if (!lastName) {
-      setError("Last name is required");
-    } else if (!dob) {
-      setError("Birthday is required");
+    if (!firstName || !/[a-z]/i.test(firstName)) {
+      setError("A valid first name is required");
+    } else if (!lastName || !/[a-z]/i.test(lastName)) {
+      setError("A valid last name is required");
+    } else if (!dob || !moment(dob, "DD/MM/YYYY", true).isValid()) {
+      setError("A valid birthday is required");
     } else if (country === "Country" || !country) {
       setError("Country is required");
-    } else if (!phoneNumber) {
-      setError("Phone number is required");
-    } else if (!email) {
-      setError("Email is required");
-    } else if (!password) {
-      setError("Password is required");
+    } else if (!phoneNumber || phoneNumber.length < 10) {
+      setError("A valid phone number is required");
+    } else if (
+      !email ||
+      !email.match(/\b[A-Za-z0-9._%+-]+@(gmail|yahoo|hotmail)\.(com|net|org)\b/)
+    ) {
+      setError("A valid gmail/yahoo/hotmail email is required");
+    } else if (
+      !password ||
+      !password.match(
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/
+      )
+    ) {
+      setError(
+        "A mix of letters, numbers and symbols of atleast 6 characters is required for the password."
+      );
     } else if (!confirmPassword) {
       setError("Password confirmation is required");
     } else if (password !== confirmPassword) {

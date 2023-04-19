@@ -26,7 +26,7 @@ const Home = () => {
         id="home"
         className="min-vh-100 d-flex flex-column justify-content-center"
       >
-        <div className="container">
+        <div className="container px-lg-0 px-4">
           <div className="row">
             <div className="col-lg-6">
               <h1>Welcome to BlocureID</h1>
@@ -58,7 +58,7 @@ const Home = () => {
       </section>
       <section
         id="features"
-        className="min-vh-100 d-flex flex-column justify-content-center py-5"
+        className="min-vh-100 d-flex flex-column justify-content-center py-5 px-lg-0 px-3"
       >
         <div className="container">
           <div className="d-flex text-center justify-content-center">
@@ -169,7 +169,7 @@ const Home = () => {
       </section>
       <section
         id="howitworks"
-        className="min-vh-100 d-flex flex-column justify-content-center py-5"
+        className="min-vh-100 d-flex flex-column justify-content-center py-5 px-lg-0 px-2"
       >
         <div className="container">
           <h1 className="text-center">How It Works</h1>
@@ -232,7 +232,7 @@ const Home = () => {
       </section>
       <section
         id="testimonials"
-        className="min-vh-100 d-flex flex-column justify-content-center py-5"
+        className="min-vh-100 d-flex flex-column justify-content-center py-5 px-lg-0 px-3"
       >
         <div className="container">
           <div className="d-flex text-center justify-content-center">

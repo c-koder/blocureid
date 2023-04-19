@@ -11,6 +11,7 @@ const digitalIdentityContract = new web3.eth.Contract(
   DigitalIdentityAbi.abi,
   contractAddress
 );
+
 const Admin = () => {
   const dispatch = useDispatch();
 

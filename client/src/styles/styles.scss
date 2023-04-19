@@ -130,9 +130,22 @@ p {
   font-weight: 500;
   text-transform: uppercase;
 
+  span {
+    cursor: pointer;
+  }
+
   &:disabled {
     color: $primary;
     background: $secondary;
+  }
+
+  &:hover {
+    background-color: rgba($dark, 0.05);
+  }
+
+  @media screen and (max-width: $mobile-res) {
+    padding: 5px 10px;
+    font-size: 16px;
   }
 }
 
@@ -156,12 +169,27 @@ p {
   }
 }
 
+.btn-success {
+  background: $success;
+  color: $dark;
+}
+
+.btn-danger {
+  background: $error;
+}
+
 .btn-icon {
   i {
     font-size: 36px;
     color: $primary;
     margin-top: 2px;
     cursor: pointer;
+  }
+
+  @media screen and (max-width: $mobile-res) {
+    i {
+      font-size: 28px;
+    }
   }
 }
 
@@ -171,6 +199,8 @@ p {
   background-color: transparent;
   border: 1px solid $gray;
   @include transition;
+  color: $dark;
+  font-weight: 500;
   padding: 16px 20px;
   border-radius: 12px;
   cursor: text;
@@ -262,6 +292,8 @@ section {
     }
 
     @media screen and (max-width: $mobile-res) {
+      max-width: 100%;
+
       .img-wrapper {
         width: 160px;
       }
@@ -425,24 +457,6 @@ section {
   }
 }
 
-/** Footer **/
-
-footer {
-  background-color: rgba($dark, 0.75);
-  padding: 12px 0;
-  text-align: center;
-
-  p {
-    margin: 0;
-    color: $light;
-    font-size: 14px;
-
-    img {
-      width: 90px;
-    }
-  }
-}
-
 /** Login **/
 
 .login-wrapper {
@@ -493,6 +507,297 @@ footer {
   @media screen and (max-width: $mobile-res) {
     max-width: 95%;
     margin: 40px auto;
+  }
+}
+
+/** Sidebar **/
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  gap: 10px;
+  top: 25px;
+
+  @media screen and (max-width: $mobile-res) {
+    .btn-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+
+      .btn {
+        padding: 8px 16px;
+
+        i {
+          font-size: 24px;
+        }
+      }
+    }
+  }
+
+  .profile-img-wrapper {
+    width: 150px;
+    height: 150px;
+    border-radius: 100px;
+    overflow: hidden;
+    margin-bottom: 10px;
+
+    img {
+      width: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+
+  .btn {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+/** Profile **/
+
+.profile {
+  .vr {
+    background-color: $primary;
+    padding: 0;
+  }
+
+  hr {
+    margin: 20px 0;
+  }
+
+  .profile-wrapper {
+    hr {
+      border-color: $primary;
+    }
+
+    .profile-form-wrapper {
+      .avatar-input {
+        input[type="file"] {
+          display: none;
+        }
+
+        .avatar-figure {
+          position: relative;
+          width: 120px;
+          height: 120px;
+          overflow: hidden;
+          border-radius: 100px;
+          text-align: center;
+
+          img {
+            cursor: pointer;
+            width: 100%;
+          }
+
+          figcaption {
+            position: absolute;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: inherit;
+            height: inherit;
+            opacity: 0;
+            background-color: rgba(0, 0, 0, 0);
+            cursor: pointer;
+            @include transition;
+          }
+
+          figcaption:hover {
+            opacity: 1;
+            background-color: rgba(0, 0, 0, 0.5);
+          }
+
+          figcaption > img {
+            // margin-top: 32.5px;
+            width: 50px;
+            height: 50px;
+          }
+        }
+      }
+    }
+  }
+}
+
+/** Identities **/
+
+.identities-wrapper {
+  max-width: 100%;
+  margin: 0 auto;
+  display: grid;
+  gap: 20px;
+
+  @media (min-width: $mobile-res) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .identity-wrapper {
+    padding: 20px;
+    background-color: $white;
+    border-radius: 15px;
+    border: 1px solid transparent;
+    @include transition;
+
+    .img-wrapper {
+      width: 120px;
+      height: 120px;
+      border-radius: 100px;
+      background-color: $light;
+      cursor: pointer;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+      }
+    }
+
+    .details-wrapper {
+      .status,
+      .type {
+        font-size: 14px;
+        font-weight: 700;
+        color: $dark;
+        padding: 4px 8px;
+        border-radius: 5px;
+
+        &.approved {
+          background-color: $success;
+        }
+
+        &.pending {
+          background-color: $warning;
+        }
+
+        &.denied {
+          background-color: $error;
+        }
+      }
+
+      .type {
+        background-color: rgba($primary, 0.75);
+        color: $white;
+      }
+
+      h5 {
+        cursor: pointer;
+      }
+
+      p {
+        margin: 0;
+        margin-bottom: 10px;
+      }
+    }
+
+    &:hover {
+      border-color: rgba($primary, 0.2);
+      box-shadow: 0px 3px 30px rgba($primary, 0.05);
+    }
+  }
+}
+
+/** Single Identity **/
+
+.single-identity-wrapper {
+  i {
+    font-size: 40px;
+    margin-top: 10px;
+    color: $dark;
+    cursor: pointer;
+  }
+
+  .profile-form-wrapper {
+    .avatar-input {
+      input[type="file"] {
+        display: none;
+      }
+
+      .avatar-figure {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        overflow: hidden;
+        border-radius: 100px;
+        text-align: center;
+
+        img {
+          cursor: pointer;
+          width: 100%;
+        }
+
+        figcaption {
+          position: absolute;
+          top: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: inherit;
+          height: inherit;
+          opacity: 0;
+          background-color: rgba(0, 0, 0, 0);
+          cursor: pointer;
+          @include transition;
+        }
+
+        figcaption:hover {
+          opacity: 1;
+          background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        figcaption > img {
+          // margin-top: 32.5px;
+          width: 50px;
+          height: 50px;
+        }
+      }
+    }
+  }
+}
+
+/** Loader **/
+
+.loader-wrapper {
+  width: 100vw;
+  z-index: 999;
+  position: fixed;
+  align-items: center;
+  background-color: $white;
+}
+
+.loader-img {
+  width: 80px;
+  transform-origin: center;
+  animation: 1s loading infinite alternate;
+
+  @keyframes loading {
+    from {
+      transform: rotate(0);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+/** Footer **/
+
+footer {
+  background-color: rgba($dark, 0.75);
+  padding: 12px 0;
+  text-align: center;
+
+  p {
+    margin: 0;
+    color: $light;
+    font-size: 14px;
+
+    img {
+      width: 90px;
+    }
   }
 }
 

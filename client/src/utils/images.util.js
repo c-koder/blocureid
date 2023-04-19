@@ -1,5 +1,6 @@
 import LogoDark from "../assets/images/logo_dark.png";
 import LogoLight from "../assets/images/logo_light.png";
+import Logo from "../assets/images/logo.png";
 
 import HomeImg from "../assets/images/home_img.png";
 
@@ -21,7 +22,10 @@ import Testimonial3 from "../assets/images/t3.png";
 
 import LoginImg from "../assets/images/login_img.png";
 
+import Avatar from "../assets/images/avatar.png";
+
 export {
+  Logo,
   LogoDark,
   LogoLight,
   HomeImg,
@@ -39,4 +43,5 @@ export {
   Testimonial2,
   Testimonial3,
   LoginImg,
+  Avatar,
 };
