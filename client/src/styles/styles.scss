@@ -170,12 +170,20 @@ p {
 }
 
 .btn-success {
-  background: $success;
   color: $dark;
+  background: rgba($success, 0.9);
+
+  &:hover {
+    background: $success;
+  }
 }
 
 .btn-danger {
-  background: $error;
+  background: rgba($error, 0.9);
+
+  &:hover {
+    background: $error;
+  }
 }
 
 .btn-icon {

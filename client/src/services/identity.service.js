@@ -8,6 +8,14 @@ const storeUserIdentity = (ipfsHash, walletAddress) => {
   return IdentityRepository.storeUserIdentity(ipfsHash, walletAddress);
 };
 
+const updateUserIdentity = (oldIpfsHash, newIpfsHash, walletAddress) => {
+  return IdentityRepository.updateUserIdentity(
+    oldIpfsHash,
+    newIpfsHash,
+    walletAddress
+  );
+};
+
 const removeUserIdentity = (ipfsHash, walletAddress) => {
   return IdentityRepository.removeUserIdentity(ipfsHash, walletAddress);
 };
@@ -31,8 +39,8 @@ const retrieveFromIpfs = (ipfsHash) => {
   return IdentityRepository.retrieveFromIpfs(ipfsHash);
 };
 
-const updateIdentityInIpfs = (data) => {
-  return IdentityRepository.updateIdentityInIpfs(data);
+const removeFromIpfs = (ipfsHash) => {
+  return IdentityRepository.removeFromIpfs(ipfsHash);
 };
 
 const updateIdentityAvatar = (avatar) => {
@@ -42,12 +50,13 @@ const updateIdentityAvatar = (avatar) => {
 export {
   getUserIdentities,
   storeUserIdentity,
+  updateUserIdentity,
   removeUserIdentity,
   getIdentities,
   createIdentity,
   updateIdentity,
   uploadToIpfs,
   retrieveFromIpfs,
-  updateIdentityInIpfs,
+  removeFromIpfs,
   updateIdentityAvatar,
 };

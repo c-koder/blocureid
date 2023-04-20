@@ -40,7 +40,6 @@ const registerUser = (user) => {
       user.dob &&
       user.email &&
       user.phone_number &&
-      user.country &&
       user.password
     ) {
       await createUserWithEmailAndPassword(auth, user.email, user.password)
@@ -94,8 +93,7 @@ const sendUserVerifyEmail = (user) => {
         user.last_name &&
         user.dob &&
         user.email &&
-        user.phone_number &&
-        user.country
+        user.phone_number
       ) {
         await sendEmailVerification(auth.currentUser)
           .then(() => {
@@ -126,8 +124,7 @@ const verifyUserEmail = (oobCode, user) => {
       user.first_name &&
       user.last_name &&
       user.email &&
-      user.phone_number &&
-      user.country
+      user.phone_number
     ) {
       await applyActionCode(auth, oobCode)
         .then(() => {
@@ -169,8 +166,7 @@ const updateUserDetails = (user) => {
       user.first_name &&
       user.last_name &&
       user.email &&
-      user.phone_number &&
-      user.country
+      user.phone_number
     ) {
       let url = null;
       if (user.avatar) {

@@ -24,3 +24,10 @@ export const setSidebarIndex = (payload) => {
     payload: payload,
   };
 };
+
+export const setCurrentIdentities = (payload) => {
+  return {
+    type: "SET_CURRENT_IDENTITIES",
+    payload: payload,
+  };
+};

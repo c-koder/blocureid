@@ -58,7 +58,7 @@ const AddIdentity = () => {
     } else {
       setProcessing(true);
 
-      const url = await updateIdentityAvatar(imgSrc);
+      const url = imgSrc ? await updateIdentityAvatar(imgSrc) : "";
 
       await uploadToIpfs(
         JSON.stringify({
@@ -179,8 +179,8 @@ const AddIdentity = () => {
                       placeholder={f.key}
                       onChange={(e) => {
                         setNewFields(
-                          newFields.map(
-                            (uF) => f === uF && { ...uF, key: e.target.value }
+                          newFields.map((uF) =>
+                            f === uF ? { ...uF, key: e.target.value } : uF
                           )
                         );
                       }}
@@ -195,9 +195,8 @@ const AddIdentity = () => {
                         placeholder={f.value}
                         onChange={(e) => {
                           setNewFields(
-                            newFields.map(
-                              (uF) =>
-                                f === uF && { ...uF, value: e.target.value }
+                            newFields.map((uF) =>
+                              f === uF ? { ...uF, value: e.target.value } : uF
                             )
                           );
                         }}

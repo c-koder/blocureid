@@ -51,7 +51,6 @@ const Profile = () => {
     if (
       updatedUser.first_name === "" ||
       updatedUser.last_name === "" ||
-      updatedUser.country === "" ||
       updatedUser.phone_number === ""
     ) {
       setError("All fields are required.");
@@ -158,28 +157,6 @@ const Profile = () => {
                       })
                     }
                   />
-                </div>
-              </div>
-              <div className="form-group row mb-3">
-                <p className="col-sm-3 my-auto">Country / Region</p>
-                <div className="col-sm-6 position-relative">
-                  <select
-                    className="form-select shadow-none form-control"
-                    defaultValue={updatedUser.country}
-                    onChange={(e) =>
-                      setUpdatedUser({
-                        ...updatedUser,
-                        country: e.target.value,
-                      })
-                    }
-                  >
-                    <option>Country</option>
-                    {countries.map((c, id) => (
-                      <option key={id} value={c}>
-                        {c}
-                      </option>
-                    ))}
-                  </select>
                 </div>
               </div>
               <div className="form-group row mb-3">

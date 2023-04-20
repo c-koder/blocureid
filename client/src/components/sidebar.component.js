@@ -16,25 +16,25 @@ const Sidebar = () => {
       <div className="btn-wrapper">
         <Link to="/profile">
           <button className={`btn ${sideBarIndex === 0 && "btn-primary"}`}>
-            <i class="fa-regular fa-circle-user d-lg-none d-block" />
+            <i className="fa-regular fa-circle-user d-lg-none d-block" />
             <span className="d-none d-lg-block">Profile</span>
           </button>
         </Link>
         <Link to="/identities">
           <button className={`btn ${sideBarIndex === 1 && "btn-primary"}`}>
-            <i class="fa-regular fa-address-card d-lg-none d-block" />
+            <i className="fa-regular fa-address-card d-lg-none d-block" />
             <span className="d-none d-lg-block">Identities</span>
           </button>
         </Link>
         <Link to="/settings">
           <button className={`btn ${sideBarIndex === 2 && "btn-primary"}`}>
-            <i class="fa-solid fa-gear d-lg-none d-block" />
+            <i className="fa-solid fa-gear d-lg-none d-block" />
             <span className="d-none d-lg-block">Settings</span>
           </button>
         </Link>
         <Link to="/logout">
           <button className={`btn ${sideBarIndex === 3 && "btn-primary"}`}>
-            <i class="fa-solid fa-arrow-right-from-bracket d-lg-none d-block" />
+            <i className="fa-solid fa-arrow-right-from-bracket d-lg-none d-block" />
             <span className="d-none d-lg-block">Logout</span>
           </button>
         </Link>

@@ -74,6 +74,46 @@ const getUserIdentities = async (walletAddress) => {
   });
 };
 
+const updateUserIdentity = async (oldIpfsHash, newIpfsHash, walletAddress) => {
+  return new Promise(async (resolve, reject) => {
+    var gasAmount = digitalIdentityContract.methods
+      .updateUserData(oldIpfsHash, newIpfsHash)
+      .estimateGas({
+        from: walletAddress,
+      })
+      .then((estimatedGas, err) => {
+        console.log("----------------");
+        console.log(err);
+        console.log("----------------");
+        console.log(gasAmount);
+
+        estimatedGas = Math.round(estimatedGas * 1.2);
+        console.log("Gas limit estimation = " + estimatedGas + " units");
+
+        digitalIdentityContract.methods
+          .updateUserData(oldIpfsHash, newIpfsHash)
+          .send({
+            from: walletAddress,
+            gas: estimatedGas,
+          })
+          .once("error", (err) => {
+            reject({ code: 500, data: err });
+          })
+          .then((receipt) => {
+            resolve({ code: 200, data: receipt });
+          });
+      })
+      .catch(function (error) {
+        console.log("estimateGas) - catch error");
+        console.log(error);
+
+        if (error.message.includes("insufficient funds")) {
+          reject({ code: 500, data: "Insufficient funds." });
+        }
+      });
+  });
+};
+
 const removeUserIdentity = async (ipfsHash, walletAddress) => {
   return new Promise(async (resolve, reject) => {
     var gasAmount = digitalIdentityContract.methods
@@ -91,7 +131,7 @@ const removeUserIdentity = async (ipfsHash, walletAddress) => {
         console.log("Gas limit estimation = " + estimatedGas + " units");
 
         digitalIdentityContract.methods
-          .storeUserData(ipfsHash)
+          .removeUserData(ipfsHash)
           .send({
             from: walletAddress,
             gas: estimatedGas,
@@ -99,8 +139,10 @@ const removeUserIdentity = async (ipfsHash, walletAddress) => {
           .once("error", (err) => {
             reject({ code: 500, data: err });
           })
-          .then((receipt) => {
-            resolve({ code: 200, data: receipt });
+          .then(async (receipt) => {
+            await removeFromIpfs(ipfsHash)
+              .then(() => resolve({ code: 200, data: receipt }))
+              .catch((err) => reject({ code: 500, data: err }));
           });
       })
       .catch(function (error) {
@@ -188,16 +230,16 @@ const retrieveFromIpfs = (ipfsHash) => {
   });
 };
 
-const updateIdentityInIpfs = (data) => {
+const removeFromIpfs = (ipfsHash) => {
   return new Promise(async (resolve, reject) => {
-    await axios
-      .put("https://api.pinata.cloud/pinning/hashMetadata", data, {
+    axios
+      .delete(`https://api.pinata.cloud/pinning/unpin/${ipfsHash}`, {
         headers: {
           pinata_api_key: `${process.env.REACT_APP_PINATA_API_KEY}`,
           pinata_secret_api_key: `${process.env.REACT_APP_PINATA_API_SECRET}`,
         },
       })
-      .then((res) => resolve({ code: 200, data: res.data }))
+      .then(() => resolve({ code: 200, data: "Removed." }))
       .catch((err) => reject({ code: 500, data: err }));
   });
 };
@@ -225,12 +267,13 @@ const updateIdentityAvatar = (avatar) => {
 export {
   getUserIdentities,
   storeUserIdentity,
+  updateUserIdentity,
   removeUserIdentity,
   createIdentity,
   getIdentities,
   updateIdentity,
   uploadToIpfs,
   retrieveFromIpfs,
-  updateIdentityInIpfs,
+  removeFromIpfs,
   updateIdentityAvatar,
 };

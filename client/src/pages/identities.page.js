@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Sidebar from "../components/sidebar.component";
 
-import { setSidebarIndex } from "../redux/actions";
+import { setCurrentIdentities, setSidebarIndex } from "../redux/actions";
 import Identity from "../components/identity.component";
 import {
   getUserIdentities,
@@ -45,13 +45,18 @@ const Identities = () => {
             setLoading(false);
           }
         })
-        .catch((err) => {
+        .catch(() => {
           setLoading(false);
         });
     } else {
       setLoading(false);
     }
   }, [walletAddress]);
+
+  useEffect(() => {
+    dispatch(setCurrentIdentities(identities));
+    // eslint-disable-next-line
+  }, [identities]);
 
   return (
     <div className="min-vh-100 d-flex flex-column">
