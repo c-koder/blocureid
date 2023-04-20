@@ -14,7 +14,6 @@ const VerifyEmail = () => {
 
   useEffect(() => {
     setLoading(true);
-    console.log(searchParams.get("oobCode"));
     if (searchParams.get("oobCode")) {
       verifyUserEmail(searchParams.get("oobCode"), currentUser)
         .then((res) => {
@@ -37,7 +36,9 @@ const VerifyEmail = () => {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [success, setSuccess] = useState(
+    "Verification email sent, check your inbox."
+  );
 
   const handleSendVerificationEmail = () => {
     setLoading(true);
