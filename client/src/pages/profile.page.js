@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import axios from "axios";
-
 import Sidebar from "../components/sidebar.component";
-import Loader from "../components/loader.component";
 
 import { Avatar } from "../utils/images.util";
 
@@ -21,19 +18,9 @@ const Profile = () => {
   );
   const [updatedUser, setUpdatedUser] = useState(currentUser);
 
-  const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState(undefined);
   const [success, setSuccess] = useState(undefined);
-
-  const [countries, setCountries] = useState([]);
-
-  useEffect(() => {
-    axios.get("https://restcountries.com/v3.1/all").then((res) => {
-      setCountries(res.data.map((c) => c.name.common).sort());
-      setLoading(false);
-    });
-  }, []);
 
   useEffect(() => {
     dispatch(setSidebarIndex(0));
@@ -87,7 +74,7 @@ const Profile = () => {
     return () => clearInterval(timer);
   }, [success]);
 
-  return !loading ? (
+  return (
     <div className="min-vh-100 d-flex flex-column">
       <div className="container my-lg-5 my-3 profile">
         <div className="row gap-3">
@@ -199,8 +186,6 @@ const Profile = () => {
         </div>
       </div>
     </div>
-  ) : (
-    <Loader />
   );
 };
 
