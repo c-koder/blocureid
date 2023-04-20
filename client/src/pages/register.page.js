@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { registerUser } from "../services/user.service";
 import moment from "moment";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const [loading, setLoading] = useState(true);
   const [countries, setCountries] = useState([]);
   const [error, setError] = useState(undefined);
@@ -28,12 +30,18 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleRegister = async () => {
-    if (!firstName || !/[a-z]/i.test(firstName)) {
+    if (!firstName || !/[a-z]/i.test(firstName) || firstName.length < 2) {
       setError("A valid first name is required");
-    } else if (!lastName || !/[a-z]/i.test(lastName)) {
+    } else if (!lastName || !/[a-z]/i.test(lastName) || lastName.length < 2) {
       setError("A valid last name is required");
-    } else if (!dob || !moment(dob, "DD/MM/YYYY", true).isValid()) {
-      setError("A valid birthday is required");
+    } else if (
+      !dob ||
+      !moment(dob, "DD/MM/YYYY", true).isValid() ||
+      moment().diff(moment(dob, "DD/MM/YYYY"), "years") < 14
+    ) {
+      setError(
+        "A valid birthday is required and you must atleast be of age 14"
+      );
     } else if (country === "Country" || !country) {
       setError("Country is required");
     } else if (!phoneNumber || phoneNumber.length !== 10) {
@@ -51,7 +59,7 @@ const Register = () => {
       )
     ) {
       setError(
-        "A mix of letters, numbers and symbols of atleast 6 characters is required for the password."
+        "A mix of uppercase, lowercase, numbers and symbols of atleast 6 characters is required for the password."
       );
     } else if (!confirmPassword) {
       setError("Password confirmation is required");
@@ -71,6 +79,17 @@ const Register = () => {
         .then((res) => {
           setSuccess(res.data);
           setProcessing(false);
+          setFirstName("");
+          setLastName("");
+          setDob("");
+          setEmail("");
+          setPhoneNumber("");
+          setCountry("");
+          setPassword("");
+          setConfirmPassword("");
+          setTimeout(() => {
+            navigate("/verify-email");
+          }, 1000);
         })
         .catch((err) => {
           setError(err.data);

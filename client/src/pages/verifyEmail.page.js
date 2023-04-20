@@ -18,7 +18,11 @@ const VerifyEmail = () => {
     if (searchParams.get("oobCode")) {
       verifyUserEmail(searchParams.get("oobCode"), currentUser)
         .then((res) => {
-          res.code === 200 && window.reload();
+          if (res.code === 200) {
+            window.location.reload();
+          } else {
+            setError("An unknown error occured.");
+          }
           setLoading(false);
         })
         .catch((err) => {

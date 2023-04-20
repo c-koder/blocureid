@@ -5,7 +5,7 @@ import { Avatar } from "../utils/images.util";
 const Identity = ({ data }) => {
   const handleRemove = async () => {
     await removeUserIdentity(data.id, data.address).then(() => {
-      window.reload();
+      window.location.reload();
     });
   };
 
